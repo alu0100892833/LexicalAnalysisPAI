@@ -13,10 +13,21 @@ public class JavaSeparator extends JavaToken {
 	private String tokenName;
 	private String separator;
 
-	public JavaSeparator(int line, int column, String tokenName, String separator) {
+	public JavaSeparator(int line, int column, String separator) {
 		super(line, column);
-		this.tokenName = tokenName;
 		this.separator = separator;
+		this.tokenName = "UNKNOWN_SEPARATOR";
+		switch(separator) {
+			case ";":  this.tokenName = "SEMICOLON"; break;
+			case ",":  this.tokenName = "COMMA"; break;
+			case "{":  this.tokenName = "LEFT_BRACE"; break;
+			case "}":  this.tokenName = "RIGHT_BRACE"; break;
+			case "[":  this.tokenName = "LEFT_BRACK"; break;
+			case "]":  this.tokenName = "RIGHT_BRACK"; break;
+			case "(":  this.tokenName = "LEFT_PAR"; break;
+			case ")":  this.tokenName = "RIGHT_PAR"; break;
+			case ".":  this.tokenName = "PERIOD"; break;
+		}
 	}
 
 	public String getTokenName() {
@@ -42,20 +53,20 @@ public class JavaSeparator extends JavaToken {
 		}
 	}
 
-	public static JavaSeparator isSeparator(String separator, int line, int col) {
-		JavaSeparator result = null;
+	public static boolean isSeparator(String separator) {
+		boolean itIs = false;
 		switch(separator) {
-			case ";":  result = new JavaSeparator(line, col, "SEMICOLON", separator); break;
-			case ",":  result = new JavaSeparator(line, col, "COMA", separator); break;
-			case "{":  result = new JavaSeparator(line, col, "LEFT_BRACE", separator); break;
-			case "}":  result = new JavaSeparator(line, col, "RIGHT_BRACE", separator); break;
-			case "[":  result = new JavaSeparator(line, col, "LEFT_BRACK", separator); break;
-			case "]":  result = new JavaSeparator(line, col, "RIGHT_BRACK", separator); break;
-			case "(":  result = new JavaSeparator(line, col, "LEFT_PAR", separator); break;
-			case ")":  result = new JavaSeparator(line, col, "RIGHT_PAR", separator); break;
-			case ".":  result = new JavaSeparator(line, col, "DOT", separator); break;
+			case ";":  itIs = true; break;
+			case ",":  itIs = true; break;
+			case "{":  itIs = true; break;
+			case "}":  itIs = true; break;
+			case "[":  itIs = true; break;
+			case "]":  itIs = true; break;
+			case "(":  itIs = true; break;
+			case ")":  itIs = true; break;
+			case ".":  itIs = true; break;
 		}
-		return result;
+		return itIs;
 	}
 }
 

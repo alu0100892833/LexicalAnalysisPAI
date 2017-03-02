@@ -10,7 +10,7 @@ public class JavaInt extends JavaNumericToken {
 
 	public JavaInt(int line, int column, int value) {
 		super(line, column);
-		value = new Integer(value);
+		this.value = new Integer(value);
 	}
 
 	public String toString() {

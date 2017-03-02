@@ -1,10 +1,33 @@
-0 0  KWCLASS class
+1 0  KWCLASS class
 1 6  ID Programa
-0 0  KWPUBLIC public
-0 0  KWSTATIC static
-0 0  KWVOID void
+1 15  LEFT_BRACE {
+2 2  KWPUBLIC public
+2 9  KWSTATIC static
+2 16  KWVOID void
 2 21  ID main
-0 0  KWINT int
+2 26  LEFT_PAR (
+2 27  RIGHT_PAR )
+2 29  LEFT_BRACE {
+3 4  KWINT int
 3 8  ID i
-3 10  ID =
-3 12  INT null
+3 10  EQUAL =
+3 12  ID objeto
+3 18  PERIOD .
+3 19  ID metodo
+3 25  LEFT_PAR (
+3 26  ID parametro
+3 35  RIGHT_PAR )
+3 36  SEMICOLON ;
+4 4  ID i
+4 5  INCREMENT ++
+4 7  SEMICOLON ;
+5 4  ID String
+5 11  ID cadena
+5 18  EQUAL =
+5 21  CHAR Hola que tal espero ser reconocida
+5 56  SEMICOLON ;
+6 2  RIGHT_BRACE }
+7 0  RIGHT_BRACE }
+8 0 EOF 
+
+

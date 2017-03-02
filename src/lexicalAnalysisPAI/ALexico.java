@@ -10,7 +10,7 @@ public class ALexico {
 			javaLexicAnalisis.run();
 		}
 		catch(Exception e) {
-			System.out.print("Algo ha ido mal");
+			System.out.println("ALGO HA IDO MAL");
 			error = true;
 			e.printStackTrace();
 		}

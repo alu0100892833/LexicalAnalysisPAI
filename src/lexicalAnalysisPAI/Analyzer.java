@@ -77,6 +77,7 @@ public class Analyzer {
 				this.analizeLine(object, line);
 				line++;
 			}
+			output.write(line + " 0 EOF \n\n\n");
 		} catch (IOException e) {
 			e.printStackTrace();
 			error = true;
@@ -99,13 +100,15 @@ public class Analyzer {
 
 		while (stringTokens.hasMoreElements()) {
 			String word = stringTokens.nextElement().toString();
+			if (word.equals(" "))
+				continue;
 			col = object.indexOf(word, col);
 
 			//Para el caso de las cadenas de caracteres
 			if (word.equals("\"")) {
 				String stringConst = "";
 				word = stringTokens.nextElement().toString();
-				while (word != "\"") {
+				while (!word.equals("\"")) {
 					stringConst += word;
 					word = stringTokens.nextElement().toString();
 				}
@@ -130,7 +133,11 @@ public class Analyzer {
 	 */
 	private void analizeWord(String word, int line, int col) {
 		JavaToken token = new JavaToken(line, col);
-		if ((token = JavaSeparator.isSeparator(word, line, col)) == null) {
+		if (JavaSeparator.isSeparator(word)) {
+			token = new JavaSeparator(line, col, word);
+			token.toFile(output);
+		}
+		else {
 			//Si no es un separador, hay que estudiarlo más a fondo
 			//Dividimos de nuevo en tokens y metemos en un arrray para que sea más sencillo de manejar
 			StringTokenizer tokenGroup = new StringTokenizer(word, "+-*/%&^|!<>~=", true);
@@ -146,8 +153,11 @@ public class Analyzer {
 					while (JavaOperator.isOperator(tokens[iterator])) {
 						operator += tokens[iterator];
 						iterator++;
+						if (iterator == tokens.length)
+							break;
 					}
-					token = JavaOperator.isOperator(operator, line, word.indexOf(operator, col));
+					token = new JavaOperator(line, col, operator);
+					col += operator.length();
 					token.toFile(output);
 					continue;
 				} else {
@@ -186,11 +196,11 @@ public class Analyzer {
 					//El segundo caso es que el identificador ya esté en la tabla de símbolos y sea una palabra reservada
 					//En el tercer caso ya no es un separador ni una palabra reservada. Es un identificador
 					if (element.equals(".")) {
-						JavaSeparator dot = JavaSeparator.isSeparator(element, line, col);
+						JavaSeparator dot = new JavaSeparator(line, col, element);
 						dot.toFile(output);
 						col += element.length();
 					} else if (symbolTable.existsKeyword(element)) {
-						JavaWord identifier = symbolTable.get(tokens[iterator]);
+						JavaWord identifier = new JavaKeyword(line, col, tokens[iterator]);
 						identifier.toFile(output);
 						col += element.length();
 					} else {
