@@ -177,18 +177,30 @@ public class Analyzer {
 					}
 				}
 
-				boolean d = symbolTable.existsKeyword(tokens[iterator]);
-				System.out.println(d);
-
-				if (symbolTable.existsKeyword(tokens[iterator])) {
-					JavaWord identifier = symbolTable.get(tokens[iterator]);
-					identifier.toFile(output);
-				} else {
-					JavaID newid = new JavaID(line, col, tokens[iterator]);
-					newid.toFile(output);
-					symbolTable.put(tokens[iterator], newid);
+				//El caso restante es que el token esté formado por uno o varios identificadores
+				//Aquí ya podemos tokenizar también con el separador punto
+				StringTokenizer lastTokenization = new StringTokenizer(tokens[iterator], ".", true);
+				while (lastTokenization.hasMoreElements()) {
+					String element = lastTokenization.nextElement().toString();
+					//El primer caso es que el token sea el separador en sí
+					//El segundo caso es que el identificador ya esté en la tabla de símbolos y sea una palabra reservada
+					//En el tercer caso ya no es un separador ni una palabra reservada. Es un identificador
+					if (element.equals(".")) {
+						JavaSeparator dot = JavaSeparator.isSeparator(element, line, col);
+						dot.toFile(output);
+						col += element.length();
+					} else if (symbolTable.existsKeyword(element)) {
+						JavaWord identifier = symbolTable.get(tokens[iterator]);
+						identifier.toFile(output);
+						col += element.length();
+					} else {
+						JavaID newid = new JavaID(line, col, tokens[iterator]);
+						newid.toFile(output);
+						symbolTable.put(tokens[iterator], newid);
+						col += element.length();
+					}
 				}
-
+				iterator++;
 			}
 		}
 

@@ -15,14 +15,15 @@ public class SymbolTable {
 	}
 
 	public void put(String lexeme, JavaWord word) {
-		if (symbols.get(lexeme) == null)
+		if (!symbols.containsKey(lexeme))
 			symbols.put(lexeme, word);
 	}
 
 	public boolean existsKeyword(String lexeme) {
-		JavaWord keyword = symbols.get(lexeme);
-		if (keyword.getClass() == JavaKeyword.class)
-			return true;
+		if (symbols.containsKey(lexeme))
+			if (symbols.get(lexeme) instanceof JavaKeyword)
+				return true;
+
 		return false;
 	}
 
